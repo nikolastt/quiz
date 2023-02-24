@@ -4,24 +4,32 @@ import { RootState } from "../store";
 
 const questions = [
   {
-    question: "Para que serve o CSS",
-    incorrectAnswers: ["Javascript", "montar tags"],
-    correctAnswer: "Estilizar Css",
+    id: 1,
+    question: "Javascript is an _______ language",
+    options: ["Object-Oriented", "Object-Based", "Procedural"],
   },
   {
-    question: "Para que serve o javascript",
-    incorrectAnswers: ["Estilizar Css", "montar tags"],
-    correctAnswer: "Javascript",
+    id: 2,
+    question:
+      "Following methods can be used to display data in some form using Javascript",
+    options: ["document.write()", "console.log()", "window.alert()"],
   },
   {
-    question: "Para que serve o javascript",
-    incorrectAnswers: ["Estilizar Css", "montar tags"],
-    correctAnswer: "Javascript",
+    id: 3,
+    question:
+      "When an operator value is NULL, the typeof returned by the unary operator is:",
+    options: ["Boolean", "Undefined", "Object"],
   },
   {
-    question: "Para que serve o javascript",
-    incorrectAnswers: ["Estilizar Css", "montar tags"],
-    correctAnswer: "Javascript",
+    id: 4,
+    question: "What does the toString() method return?",
+    options: ["Return Object", "Return String", "Return Integer"],
+  },
+  {
+    id: 5,
+    question:
+      "Which function is used to serialize an object into a JSON string?",
+    options: ["stringify()", "parse()", "convert()"],
   },
 ];
 
@@ -30,7 +38,7 @@ const initialState = {
   currentQuestionIndex: 0,
   showResults: false,
   correctAnswerCount: 0,
-  answers: shuffleAnswers(questions[0]),
+  answers: questions[0],
 };
 
 export const quizSlice = createSlice({
@@ -42,17 +50,35 @@ export const quizSlice = createSlice({
         state.currentQuestionIndex === state.questions.length - 1;
       const currentQuestionIndex = showResults
         ? state.questions.length
-        : state.questions.length + 1;
+        : state.currentQuestionIndex + 1;
+      const answers = state.questions[currentQuestionIndex];
+
       return {
         ...state,
         currentQuestionIndex,
         showResults,
+        answers,
+      };
+    },
+
+    prevQuestion: (state) => {
+      const currentQuestionIndex =
+        state.currentQuestionIndex === 0
+          ? state.currentQuestionIndex
+          : state.currentQuestionIndex - 1;
+
+      const answers = state.questions[currentQuestionIndex];
+
+      return {
+        ...state,
+        currentQuestionIndex,
+        answers,
       };
     },
   },
 });
 
-export const { nextQuestion } = quizSlice.actions;
+export const { nextQuestion, prevQuestion } = quizSlice.actions;
 
 export const selectQuizState = (state: RootState) => state.quiz;
 
